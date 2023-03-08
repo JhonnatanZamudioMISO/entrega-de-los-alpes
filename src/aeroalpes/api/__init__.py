@@ -43,6 +43,7 @@ def comenzar_consumidor():
     threading.Thread(target=precios_dinamicos.suscribirse_a_eventos).start()
     threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
     threading.Thread(target=vuelos.suscribirse_a_eventos).start()
+    threading.Thread(target=pedidos.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
     threading.Thread(target=cliente.suscribirse_a_comandos).start()
@@ -51,6 +52,7 @@ def comenzar_consumidor():
     threading.Thread(target=precios_dinamicos.suscribirse_a_comandos).start()
     threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
     threading.Thread(target=vuelos.suscribirse_a_comandos).start()
+    threading.Thread(target=pedidos.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -85,6 +87,7 @@ def create_app(configuracion={}):
     from . import precios_dinamicos
     from . import vehiculos
     from . import vuelos
+    from . import pedidos
 
     # Registro de Blueprints
     app.register_blueprint(cliente.bp)
@@ -93,6 +96,7 @@ def create_app(configuracion={}):
     app.register_blueprint(precios_dinamicos.bp)
     app.register_blueprint(vehiculos.bp)
     app.register_blueprint(vuelos.bp)
+    app.register_blueprint(pedidos.bp)
 
     @app.route("/spec")
     def spec():
