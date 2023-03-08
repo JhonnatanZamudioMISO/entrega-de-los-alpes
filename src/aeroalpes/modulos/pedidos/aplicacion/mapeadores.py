@@ -2,7 +2,7 @@ from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
 from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
 from aeroalpes.modulos.pedidos.dominio.entidades import Orden, Direccion
 from aeroalpes.modulos.pedidos.dominio.objetos_valor import Ruta, Odo, Segmento, Leg
-from .dto import ReservaDTO, RutaDTO, OdoDTO, SegmentoDTO, LegDTO
+from .dto import OrdenDTO, RutaDTO, OdoDTO, SegmentoDTO, LegDTO
 
 from datetime import datetime
 
