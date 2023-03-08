@@ -6,7 +6,7 @@ from aeroalpes.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from aeroalpes.modulos.vuelos.aplicacion.mapeadores import MapeadorReservaDTOJson
+from aeroalpes.modulos.pedidos.aplicacion.mapeadores import MapeadorOrdenDTOJson
 from aeroalpes.modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
 from aeroalpes.modulos.vuelos.aplicacion.queries.obtener_reserva import ObtenerReserva
 from aeroalpes.seedwork.aplicacion.comandos import ejecutar_commando
@@ -19,8 +19,8 @@ def orden():
     try:
         orden_dict = request.json
 
-        map_orden = MapeadorReservaDTOJson()
-        reserva_dto = map_orden.externo_a_dto(orden_dict)
+        map_orden = MapeadorOrdenDTOJson()
+        orden_dto = map_orden.externo_a_dto(orden_dict)
 
         sr = ServicioReserva()
         dto_final = sr.crear_reserva(reserva_dto)
