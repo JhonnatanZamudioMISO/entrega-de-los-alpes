@@ -5,7 +5,7 @@ objetos complejos del dominio de vuelos
 
 """
 
-from .entidades import Reserva
+from .entidades import Orden
 from .reglas import MinimoUnaRuta, RutaValida
 from .excepciones import TipoObjetoNoExisteEnDominioVuelosExcepcion
 from aeroalpes.seedwork.dominio.repositorios import Mapeador, Repositorio
@@ -21,17 +21,17 @@ class _FabricaOrden(Fabrica):
         else:
             orden: Orden = mapeador.dto_a_entidad(obj)
 
-            self.validar_regla(MinimoUnaRuta(reserva.rutas))
-            [self.validar_regla(RutaValida(ruta)) for itin in reserva.itinerarios for odo in itin.odos for segmento in odo.segmentos for ruta in segmento.legs]
+            self.validar_regla(MinimoUnaRuta(orden.rutas))
+            [self.validar_regla(RutaValida(ruta)) for rut in orden.rutas for odo in rut.odos for segmento in odo.segmentos for ruta in segmento.legs]
             
-            return reserva
+            return orden
 
 @dataclass
-class FabricaVuelos(Fabrica):
+class FabricaPedidos(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
-        if mapeador.obtener_tipo() == Reserva.__class__:
-            fabrica_reserva = _FabricaReserva()
-            return fabrica_reserva.crear_objeto(obj, mapeador)
+        if mapeador.obtener_tipo() == Orden.__class__:
+            fabrica_orden = _FabricaOrden()
+            return fabrica_orden.crear_objeto(obj, mapeador)
         else:
-            raise TipoObjetoNoExisteEnDominioVuelosExcepcion()
+            raise TipoObjetoNoExisteEnDominioPedidosExcepcion()
 
