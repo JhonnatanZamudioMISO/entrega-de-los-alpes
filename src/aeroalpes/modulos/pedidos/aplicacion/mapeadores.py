@@ -2,14 +2,14 @@ from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
 from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
 from aeroalpes.modulos.vuelos.dominio.entidades import Reserva, Aeropuerto
 from aeroalpes.modulos.vuelos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
-from .dto import ReservaDTO, ItinerarioDTO, OdoDTO, SegmentoDTO, LegDTO
+from .dto import ReservaDTO, RutaDTO, OdoDTO, SegmentoDTO, LegDTO
 
 from datetime import datetime
 
 class MapeadorOrdenDTOJson(AppMap):
-    def _procesar_ruta(self, ruta: dict) -> ItinerarioDTO:
+    def _procesar_ruta(self, ruta: dict) -> RutaDTO:
         odos_dto: list[OdoDTO] = list()
-        for odo in itinerario.get('odos', list()):
+        for odo in ruta.get('odos', list()):
 
             segmentos_dto: list[SegmentoDTO] = list()
             for segmento in odo.get('segmentos', list()):
@@ -22,24 +22,24 @@ class MapeadorOrdenDTOJson(AppMap):
             
             odos_dto.append(Odo(segmentos_dto))
 
-        return ItinerarioDTO(odos_dto)
+        return RutaDTO(odos_dto)
     
-    def externo_a_dto(self, externo: dict) -> ReservaDTO:
-        reserva_dto = ReservaDTO()
+    def externo_a_dto(self, externo: dict) -> OrdenDTO:
+        orden_dto = OrdenDTO()
 
-        itinerarios: list[ItinerarioDTO] = list()
-        for itin in externo.get('itinerarios', list()):
-            reserva_dto.itinerarios.append(self._procesar_itinerario(itin))
+        rutas: list[RutaDTO] = list()
+        for rut in externo.get('rutas', list()):
+            orden_dto.rutas.append(self._procesar_ruta(rut))
 
-        return reserva_dto
+        return orden_dto
 
-    def dto_a_externo(self, dto: ReservaDTO) -> dict:
+    def dto_a_externo(self, dto: OrdenDTO) -> dict:
         return dto.__dict__
 
-class MapeadorReserva(RepMap):
+class MapeadorOrden(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
-    def _procesar_itinerario(self, itinerario_dto: ItinerarioDTO) -> Itinerario:
+    def _procesar_ruta(self, ruta_dto: RutaDTO) -> Ruta:
         odos = list()
 
         for odo_dto in itinerario_dto.odos:
