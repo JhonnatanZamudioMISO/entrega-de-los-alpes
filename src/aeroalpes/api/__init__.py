@@ -9,6 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 def registrar_handlers():
     import aeroalpes.modulos.cliente.aplicacion
     import aeroalpes.modulos.vuelos.aplicacion
+    import aeroalpes.modulos.pedidos.aplicacion
 
 def importar_modelos_alchemy():
     import aeroalpes.modulos.cliente.infraestructura.dto
@@ -17,6 +18,7 @@ def importar_modelos_alchemy():
     import aeroalpes.modulos.precios_dinamicos.infraestructura.dto
     import aeroalpes.modulos.vehiculos.infraestructura.dto
     import aeroalpes.modulos.vuelos.infraestructura.dto
+    import aeroalpes.modulos.pedidos.infraestructura.dto
 
 def comenzar_consumidor():
     """
@@ -32,6 +34,7 @@ def comenzar_consumidor():
     import aeroalpes.modulos.precios_dinamicos.infraestructura.consumidores as precios_dinamicos
     import aeroalpes.modulos.vehiculos.infraestructura.consumidores as vehiculos
     import aeroalpes.modulos.vuelos.infraestructura.consumidores as vuelos
+    import aeroalpes.modulos.pedidos.infraestructura.consumidores as pedidos
 
     # Suscripción a eventos
     threading.Thread(target=cliente.suscribirse_a_eventos).start()
