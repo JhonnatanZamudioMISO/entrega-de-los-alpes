@@ -1,14 +1,14 @@
 import aeroalpes.seedwork.presentacion.api as api
 import json
-from aeroalpes.modulos.vuelos.aplicacion.servicios import ServicioReserva
-from aeroalpes.modulos.vuelos.aplicacion.dto import ReservaDTO
+from aeroalpes.modulos.pedidos.aplicacion.servicios import ServicioOrden
+from aeroalpes.modulos.pedidos.aplicacion.dto import OrdenDTO
 from aeroalpes.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
 from aeroalpes.modulos.pedidos.aplicacion.mapeadores import MapeadorOrdenDTOJson
-from aeroalpes.modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
-from aeroalpes.modulos.vuelos.aplicacion.queries.obtener_reserva import ObtenerReserva
+from aeroalpes.modulos.pedidos.aplicacion.comandos.crear_reserva import CrearReserva
+from aeroalpes.modulos.pedidos.aplicacion.queries.obtener_reserva import ObtenerReserva
 from aeroalpes.seedwork.aplicacion.comandos import ejecutar_commando
 from aeroalpes.seedwork.aplicacion.queries import ejecutar_query
 
@@ -22,22 +22,22 @@ def orden():
         map_orden = MapeadorOrdenDTOJson()
         orden_dto = map_orden.externo_a_dto(orden_dict)
 
-        sr = ServicioReserva()
-        dto_final = sr.crear_reserva(reserva_dto)
+        sr = ServicioOrden()
+        dto_final = sr.crear_orden(orden_dto)
 
         return map_orden.dto_a_externo(dto_final)
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/reserva-comando', methods=('POST',))
-def reservar_asincrona():
+@bp.route('/orden-comando', methods=('POST',))
+def orden_asincrona():
     try:
-        reserva_dict = request.json
+        orden_dict = request.json
 
-        map_reserva = MapeadorReservaDTOJson()
-        reserva_dto = map_reserva.externo_a_dto(reserva_dict)
+        map_orden = MapeadorOrdenDTOJson()
+        orden_dto = map_orden.externo_a_dto(orden_dict)
 
-        comando = CrearReserva(reserva_dto.fecha_creacion, reserva_dto.fecha_actualizacion, reserva_dto.id, reserva_dto.itinerarios)
+        comando = CrearOrden(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id, orden_dto.rutas)
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
@@ -47,24 +47,24 @@ def reservar_asincrona():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/reserva', methods=('GET',))
-@bp.route('/reserva/<id>', methods=('GET',))
-def dar_reserva(id=None):
+@bp.route('/orden', methods=('GET',))
+@bp.route('/orden/<id>', methods=('GET',))
+def dar_orden(id=None):
     if id:
-        sr = ServicioReserva()
-        map_reserva = MapeadorReservaDTOJson()
+        sr = ServicioOrden()
+        map_orden = MapeadorOrdenDTOJson()
         
-        return map_reserva.dto_a_externo(sr.obtener_reserva_por_id(id))
+        return map_orden.dto_a_externo(sr.obtener_orden_por_id(id))
     else:
         return [{'message': 'GET!'}]
 
-@bp.route('/reserva-query', methods=('GET',))
-@bp.route('/reserva-query/<id>', methods=('GET',))
-def dar_reserva_usando_query(id=None):
+@bp.route('/orden-query', methods=('GET',))
+@bp.route('/orden-query/<id>', methods=('GET',))
+def dar_orden_usando_query(id=None):
     if id:
-        query_resultado = ejecutar_query(ObtenerReserva(id))
-        map_reserva = MapeadorReservaDTOJson()
+        query_resultado = ejecutar_query(ObtenerOrden(id))
+        map_orden = MapeadorOrdenDTOJson()
         
-        return map_reserva.dto_a_externo(query_resultado.resultado)
+        return map_orden.dto_a_externo(query_resultado.resultado)
     else:
         return [{'message': 'GET!'}]
