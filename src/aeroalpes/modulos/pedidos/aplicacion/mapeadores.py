@@ -1,7 +1,7 @@
 from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
 from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
 from aeroalpes.modulos.vuelos.dominio.entidades import Reserva, Aeropuerto
-from aeroalpes.modulos.vuelos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
+from aeroalpes.modulos.pedidos.dominio.objetos_valor import Ruta, Odo, Segmento, Leg
 from .dto import ReservaDTO, RutaDTO, OdoDTO, SegmentoDTO, LegDTO
 
 from datetime import datetime
@@ -42,7 +42,7 @@ class MapeadorOrden(RepMap):
     def _procesar_ruta(self, ruta_dto: RutaDTO) -> Ruta:
         odos = list()
 
-        for odo_dto in itinerario_dto.odos:
+        for odo_dto in ruta_dto.odos:
             segmentos = list()
             for seg_dto in odo_dto.segmentos:
                 

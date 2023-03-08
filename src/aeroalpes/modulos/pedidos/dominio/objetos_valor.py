@@ -20,7 +20,7 @@ class CodigoProducto(Codigo):
     ...
 
 @dataclass(frozen=True)
-class NombreProveedor():
+class NombreBarrio():
     nombre: str
 
 @dataclass(frozen=True)
