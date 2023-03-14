@@ -1,13 +1,13 @@
 
 
-from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada
+from aeroalpes.modulos.pedidos.dominio.eventos import OrdenCreada
 from aeroalpes.seedwork.aplicacion.handlers import Handler
 
-class HandlerReservaDominio(Handler):
+class HandlerOrdenDominio(Handler):
 
     @staticmethod
-    def handle_reserva_creada(evento):
-        print('================ RESERVA CREADA ===========')
+    def handle_orden_creada(evento):
+        print('================ ORDEN CREADA ===========')
         
 
     
